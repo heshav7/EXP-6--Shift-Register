@@ -19,9 +19,26 @@ else Q <= {Q[2:0], sin};   // shift left, sin enters at LSB
 
 Serial output: sout = Q[3]   (the bit about to be shifted out)
 
-## Design / RTL Program
+## Design /// gedit shift_reg.v
+ 
+module shift_reg (
+    input  wire       clk,   // clock
+    input  wire       rst,   // asynchronous active-high reset
+    input  wire       sin,   // serial input
+    output wire       sout,  // serial output (MSB, about to shift out)
+    output reg  [3:0] Q      // parallel output
+);
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            Q <= 4'b0000;
+        else
+            Q <= {Q[2:0], sin};   // shift left, sin enters at LSB
+    end
+ 
+    assign sout = Q[3];
+endmodule
+ RTL Program
 
-Testbench Program
 
 
 
@@ -83,6 +100,7 @@ The design was compiled and simulated using Synopsys VCS, and the functionality 
 
 ## Output
 
+<img width="1920" height="1080" alt="Screenshot (24)" src="https://github.com/user-attachments/assets/3d2e0a2d-bc20-49e5-b449-2ffaee3a26a6" />
 
 
 ## Viva-Voce Questions
